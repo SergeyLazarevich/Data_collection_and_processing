@@ -1,2 +1,2 @@
-# Methods_of_data_analysis
+# Data_collection_and_processing
 Cбор и обработка данных
