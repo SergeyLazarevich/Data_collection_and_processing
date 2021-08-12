@@ -56,9 +56,9 @@ class ParsingHH:
             self.db = self.client[self.database]
             self.collections = self.db[self.collection]
             if sign == '>':
-                collections_vacancy = self.collections.find({'pay_max': { '$gt': number }}, {'_id': 0})
+                collections_vacancy = self.collections.find({'$and': {['pay_max': { '$lte': number },{'pay_min': { '$gte': number }}]}, {'_id': 0}})
             elif sign == '<':
-                collections_vacancy = self.collections.find({'pay_min': { '$lt': number }}, {'_id': 0})
+                collections_vacancy = self.collections.find({'pay_min': { '$lte': number }}, {'_id': 0})
             else: 
                 return f'Enter ‘>’ or ‘<’'
             for base_vacancy in collections_vacancy:
@@ -77,7 +77,7 @@ class ParsingHH:
             self.collections = self.db[self.collection]
             #Добавляем новые вакансии
             for vacancy in self.vacancies:
-                new_vacancy = self.collections.find({ '_id': { '$eq': vacancy['_id']}})
+                new_vacancy = self.collections.find({ '_id': { '$eq': vacancy['_id']}})#.update_one(query, update, upsert=True)
                 try:
                     new_vacancy.next()
                 except:
